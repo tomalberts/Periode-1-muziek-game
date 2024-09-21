@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0C92F463-D7DF-4922-BBBE-31AF581FA067}</ProjectGuid>
+    <ProjectGuid>{A5C94172-DC4F-4318-A84A-302FA691E47E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Muziek_spel</RootNamespace>
-    <AssemblyName>Muziek-spel</AssemblyName>
+    <RootNamespace>Muziek_Game</RootNamespace>
+    <AssemblyName>Muziek-Game</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
