@@ -12,3 +12,6 @@ C:\Users\hfhaa\Documents\Periode-1-muziek-game\Muziek-Game\bin\Debug\Muziek-Game
 C:\Users\hfhaa\Documents\Periode-1-muziek-game\Muziek-Game\bin\Debug\Muziek-Game.pdb
 C:\Users\hfhaa\Documents\Periode-1-muziek-game\Muziek-Game\obj\Debug\Muziek-Game.exe
 C:\Users\hfhaa\Documents\Periode-1-muziek-game\Muziek-Game\obj\Debug\Muziek-Game.pdb
+C:\Users\hfhaa\Documents\Periode-1-muziek-game\Muziek-Game\obj\Debug\MainMenu.g.cs
+C:\Users\hfhaa\Documents\Periode-1-muziek-game\Muziek-Game\obj\Debug\Muziek-Game_MarkupCompile.lref
+C:\Users\hfhaa\Documents\Periode-1-muziek-game\Muziek-Game\obj\Debug\MainMenu.baml
