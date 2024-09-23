@@ -44,11 +44,13 @@ namespace Muziek_Game
                 return 1;
 
             }
-            catch (Exception)
+            catch (Exception error)
             {
                 // Catch Error als er een is
 
                 //hier de rest van de codebase!
+
+                Console.WriteLine(error.Message);
 
                 return 0;
             }
@@ -65,11 +67,13 @@ namespace Muziek_Game
                 return 1;
 
             }
-            catch (Exception)
+            catch (Exception error)
             {
                 // Catch Error als er een is
 
                 //hier de rest van de codebase!
+
+                Console.WriteLine(error);
 
                 return 0;
             }
