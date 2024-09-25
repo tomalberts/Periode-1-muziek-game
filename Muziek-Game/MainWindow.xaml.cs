@@ -15,68 +15,75 @@ namespace Muziek_Game
         private int[] portalPositie = { 1000, 200 };
         private Stopwatch stopwatch; // Voor delta timing
         private long previousTime;
+        private List<Level> levels;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            gameCanvas = GameCanvas;
-            portalManager = new PortalManager();
-
-            StartGame();
-
-            // Start stopwatch voor nauwkeurige tijdsmetingen
             stopwatch = new Stopwatch();
-            stopwatch.Start();
-            previousTime = stopwatch.ElapsedMilliseconds;
+            stopwatch.Start(); // Start de stopwatch
 
-            // Gebruik CompositionTarget.Rendering voor betere synchronisatie met de rendering
-            CompositionTarget.Rendering += GameLoop;
+            CompositionTarget.Rendering += GameLoop; // Gebruik Rendering voor de game loop
+
+            levels = new List<Level>
+            {
+                // Voeg niveaus toe met verschillende moeilijkheidsgraden en blokken
+                // De array van blokken bepaalt welke rijen blokken spawnen
+                // 0 = geen blokken, 1 = bovenste rij, 2 = onderste rij, 3 = beide rijen
+
+                new Level(120, 1, 500, new int[] { 1, 0, 1, 2, 3, 1, 0, 0, 2, 1, 3, 1 }), // Niveau 1
+                new Level(130, 2, 400, new int[] { 0, 1, 1, 0, 1 }), // Niveau 2
+                new Level(140, 3, 300, new int[] { 1, 1, 0, 2, 2 }), // Niveau 3
+                // Voeg meer niveaus toe zoals nodig
+            };
+
+            gameCanvas = GameCanvas; // Verbind de gameCanvas van XAML
+            portalManager = new PortalManager(); // Initialiseer de portal manager
+
+            StartGame(); // Start het spel
         }
 
-        public int StartGame()
+        public void LoadLevel(int levelIndex)
         {
-            try
+            if (levelIndex < 0 || levelIndex >= levels.Count) return;
+
+            Level currentLevel = levels[levelIndex];
+            blocks = new List<Block>(); // Reset de blokkenlijst voor het nieuwe niveau
+
+            int upperRowY = 150; // Y-positie voor de bovenste rij
+            int lowerRowY = 350; // Y-positie voor de onderste rij, met meer afstand
+
+            // Spawn blokken op basis van de array van het huidige niveau
+            for (int i = 0; i < currentLevel.BlockRows.Length; i++)
             {
-                blocks = new List<Block>();
+                int startX = 800 + i * 100; // Verschuif elk blok naar rechts
 
-                // Bepaal de Y-posities voor de bovenste en onderste rij
-                int upperRowY = 200; // Y-positie voor de bovenste rij
-                int lowerRowY = 350; // Y-positie voor de onderste rij, met meer afstand (bijv. 200 pixels verschil)
-
-                // Array die bepaalt of een blok in de bovenste rij (true) of onderste rij (false) komt
-                bool[] blockRows = new bool[] { true, false, true, true, false, false, true, false }; // Pas aan op je patroon
-
-                // Spawn blokken op basis van de array
-                for (int i = 0; i < blockRows.Length; i++)
+                switch (currentLevel.BlockRows[i])
                 {
-                    int startX = 800 + i * 100; // Verschuif elk blok naar rechts
-
-                    if (blockRows[i])
-                    {
-                        // Plaats in de bovenste rij
-                        SpawnBlock(upperRowY, startX, true);
-                    }
-                    else
-                    {
-                        // Plaats in de onderste rij
-                        SpawnBlock(lowerRowY, startX, false);
-                    }
+                    case 0:
+                        break; // Geen blokken
+                    case 1:
+                        SpawnBlock(upperRowY, startX, true); // Bovenste rij
+                        break;
+                    case 2:
+                        SpawnBlock(lowerRowY, startX, false); // Onderste rij
+                        break;
+                    case 3:
+                        SpawnBlock(upperRowY, startX, true); // Bovenste rij
+                        SpawnBlock(lowerRowY, startX, false); // Onderste rij
+                        break;
                 }
-
-                // Initialiseer het portaal
-                portalManager.InitializePortal(gameCanvas, portalPositie);
-
-                return 1;
             }
-            catch (Exception error)
-            {
-                Console.WriteLine(error.Message);
-                return 0;
-            }
+
+            // Initialiseer het portaal
+            portalManager.InitializePortal(gameCanvas, portalPositie);
         }
 
-
+        public void StartGame()
+        {
+            LoadLevel(0); // Laad het eerste niveau
+        }
 
         private void GameLoop(object sender, EventArgs e)
         {
@@ -85,7 +92,7 @@ namespace Muziek_Game
             double deltaTime = (currentTime - previousTime) / 1000.0; // Omzetten naar seconden
             previousTime = currentTime;
 
-            UpdateBlocks(deltaTime);
+            UpdateBlocks(deltaTime); // Update de blokken
         }
 
         public void SpawnBlock(int startY, int startX, bool firstRow)
@@ -96,9 +103,14 @@ namespace Muziek_Game
 
         public void UpdateBlocks(double deltaTime)
         {
-            foreach (var block in blocks)
+            for (int i = blocks.Count - 1; i >= 0; i--) // Achterwaarts itereren om veilig te verwijderen
             {
-                block.MoveLeft(deltaTime);
+                var block = blocks[i];
+                block.MoveLeft(deltaTime); // Verplaats blok
+                if (Canvas.GetLeft(block.BlockObj) < -50) // Verwijder blokken die buiten het canvas zijn
+                {
+                    blocks.RemoveAt(i);
+                }
             }
         }
     }

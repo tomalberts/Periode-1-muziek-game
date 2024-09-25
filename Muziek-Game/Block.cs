@@ -1,45 +1,36 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Shapes;
 
-namespace Muziek_Game
+internal class Block
 {
-    internal class Block
+    public Rectangle BlockObj { get; private set; }
+    private double Speed;
+    private Canvas GameCanvas;
+
+    public Block(Canvas canvas, int starty, int startx, bool firstrow, double speed)
     {
-        private Rectangle block_obj;
-        private double speed; // Snelheid in pixels per seconde
-        private Canvas gameCanvas;
+        int width = 50;
+        int height = 50;
 
-        public Block(Canvas canvas, int startY, int startX, bool firstRow, double speed)
+        GameCanvas = canvas;
+        Speed = speed;
+
+        BlockObj = new Rectangle()
         {
-            this.speed = speed; // Stel de snelheid in
+            Width = width,
+            Height = height,
+            Fill = System.Windows.Media.Brushes.Red
+        };
 
-            gameCanvas = canvas;
+        Canvas.SetLeft(BlockObj, startx);
+        Canvas.SetTop(BlockObj, firstrow ? starty : starty - 50);
 
-            block_obj = new Rectangle()
-            {
-                Width = 50,
-                Height = 50,
-                Fill = System.Windows.Media.Brushes.Red
-            };
+        GameCanvas.Children.Add(BlockObj);
+    }
 
-            Canvas.SetLeft(block_obj, startX);
-            if (firstRow)
-                Canvas.SetTop(block_obj, startY);
-            else
-                Canvas.SetTop(block_obj, startY - 50);
-
-            gameCanvas.Children.Add(block_obj);
-        }
-
-        // Verplaats het blok naar links, rekening houdend met deltaTime
-        public void MoveLeft(double deltaTime)
-        {
-            // Bereken de nieuwe positie
-            double left = Canvas.GetLeft(block_obj);
-            double newLeft = left - speed * deltaTime; // Snelheid wordt vermenigvuldigd met deltaTime
-
-            // Verplaats het blok naar de nieuwe positie
-            Canvas.SetLeft(block_obj, newLeft);
-        }
+    public void MoveLeft(double deltaTime)
+    {
+        double newX = Canvas.GetLeft(BlockObj) - Speed * deltaTime; // Vermijd het opnieuw berekenen van waarden
+        Canvas.SetLeft(BlockObj, newX);
     }
 }
