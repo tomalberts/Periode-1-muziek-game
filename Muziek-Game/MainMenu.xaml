@@ -7,6 +7,14 @@
         mc:Ignorable="d"
         Title="MainMenu" Height="450" Width="800">
     <Grid>
-        <Button Click="Button_Click">Start Game</Button>
+        <!-- Gebruik StackPanel om een rij buttons te creëren -->
+        <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+            <!-- Buttons in een rij -->
+            <Button Click="Button_Click" Width="100" Height="50" Margin="10"> Button 1 </Button>
+            <Button Width="100" Height="50" Margin="10"> Button 2 </Button>
+            <Button Width="100" Height="50" Margin="10">Button 3</Button>
+        </StackPanel>
     </Grid>
 </Window>
